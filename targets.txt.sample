@@ -1,0 +1,14 @@
+
+# relative to ~
+# is turned into a single line as last argument to tarsnap -c
+
+Documents/xzy
+
+# lines beginning with '#' are dropped
+
+--exclude
+Documents/xzy/abc
+
+#-C dir/
+#abc/def/
+
