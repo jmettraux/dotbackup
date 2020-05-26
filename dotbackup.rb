@@ -102,5 +102,18 @@ elsif (ARGV & %w[ -p --print-stats ]).any?
 
   system(
     "tarsnap --keyfile #{KEY} --cachedir #{CACHE} --print-stats")
+
+elsif (ARGV & %w[ --read ]).any?
+
+  f =
+    case fa = ARGV.find { |a| a[0, 1] != '-' }
+    when nil, 'last' then last
+    when 'first' then first
+    else fa
+    end
+
+  puts "writing #{f}.tar"
+  system(
+    "tarsnap -r --keyfile #{KEY} --cachedir #{CACHE} -f #{f} > #{f}.tar")
 end
 
