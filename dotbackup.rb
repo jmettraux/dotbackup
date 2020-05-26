@@ -11,6 +11,11 @@ CACHE = bpath('cache')
 TFILE = bpath('targets.txt')
 
 
+def last
+  `tarsnap --keyfile #{KEY} --list-archives | sort | tail -1`.strip
+end
+
+
 if ARGV.empty? || (ARGV & %w[ -b --backup ]).any?
 
   unless File.exists?(TFILE)
@@ -49,8 +54,14 @@ elsif (ARGV & %w[ --delete ]).any?
 elsif (ARGV & %w[ -t ]).any?
 
   f = ARGV.find { |a| a[0, 1] != '-' }
+  f = last if f == 'last'
+  puts "f: #{f}"
 
   system(
     "tarsnap -tv --keyfile #{KEY} --cachedir #{CACHE} -f #{f}")
+
+elsif (ARGV & %w[ --last ]).any?
+
+  puts(last)
 end
 
