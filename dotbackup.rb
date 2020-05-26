@@ -18,6 +18,15 @@ def last
   `tarsnap --keyfile #{KEY} --list-archives | sort | tail -1`.strip
 end
 
+def determine_backup_file
+
+  case fa = ARGV.find { |a| a[0, 1] != '-' }
+  when nil, 'last' then last
+  when 'first' then first
+  else fa
+  end
+end
+
 
 if (ARGV & %w[ -h --help ]).any?
 
@@ -66,16 +75,14 @@ elsif (ARGV & %w[ -l --list ]).any?
 
 elsif (ARGV & %w[ --delete ]).any?
 
-  f = ARGV.find { |a| a[0, 1] != '-' }
-  f = first if f == 'first'
+  f = determine_backup_file
 
   system(
     "tarsnap -dv --keyfile #{KEY} --cachedir #{CACHE} -f #{f}")
 
 elsif (ARGV & %w[ -t ]).any?
 
-  f = ARGV.find { |a| a[0, 1] != '-' }
-  f = last if f == 'last'
+  f = determine_backup_file
   puts "f: #{f}"
 
   system(
@@ -91,8 +98,7 @@ elsif (ARGV & %w[ --last ]).any?
 
 elsif (ARGV & %w[ --extract ]).any?
 
-  f = ARGV.find { |a| a[0, 1] != '-' }
-  f = last if f == nil || f == 'last'
+  f = determine_backup_file
   puts "f: #{f}"
 
   system(
@@ -100,19 +106,16 @@ elsif (ARGV & %w[ --extract ]).any?
 
 elsif (ARGV & %w[ -p --print-stats ]).any?
 
+  f = determine_backup_file
+
   system(
-    "tarsnap --keyfile #{KEY} --cachedir #{CACHE} --print-stats")
+    "tarsnap --keyfile #{KEY} --cachedir #{CACHE} --print-stats -f #{f}")
 
 elsif (ARGV & %w[ --read ]).any?
 
-  f =
-    case fa = ARGV.find { |a| a[0, 1] != '-' }
-    when nil, 'last' then last
-    when 'first' then first
-    else fa
-    end
-
+  f = determine_backup_file
   puts "writing #{f}.tar"
+
   system(
     "tarsnap -r --keyfile #{KEY} --cachedir #{CACHE} -f #{f} > #{f}.tar")
 end
