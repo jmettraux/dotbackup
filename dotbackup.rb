@@ -63,5 +63,14 @@ elsif (ARGV & %w[ -t ]).any?
 elsif (ARGV & %w[ --last ]).any?
 
   puts(last)
+
+elsif (ARGV & %w[ --extract ]).any?
+
+  f = ARGV.find { |a| a[0, 1] != '-' }
+  f = last if f == 'last'
+  puts "f: #{f}"
+
+  system(
+    "tarsnap -xv --keyfile #{KEY} --cachedir #{CACHE} -f #{f}")
 end
 
