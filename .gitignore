@@ -1,0 +1,11 @@
+
+*.key
+
+cache/cseq
+cache/cache
+cache/lockf
+cache/directory
+
+targets.txt
+  # enumeration of files/dirs to backup on OSX
+
