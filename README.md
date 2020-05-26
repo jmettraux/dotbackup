@@ -3,11 +3,6 @@
 
 scripts/scheme for tarsnap backup on OSX.
 
-## keygen
-
-```sh
-```
-
 
 ## license
 
