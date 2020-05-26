@@ -45,5 +45,12 @@ elsif (ARGV & %w[ --delete ]).any?
 
   system(
     "tarsnap -d --keyfile #{KEY} --cachedir #{CACHE} -f #{f}")
+
+elsif (ARGV & %w[ -t ]).any?
+
+  f = ARGV.find { |a| a[0, 1] != '-' }
+
+  system(
+    "tarsnap -tv --keyfile #{KEY} --cachedir #{CACHE} -f #{f}")
 end
 
