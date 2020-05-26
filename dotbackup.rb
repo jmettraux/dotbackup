@@ -30,11 +30,15 @@ if (ARGV & %w[ -h --help ]).any?
   puts "[90m  deletes a backup file"
   puts "[0:0mdotbackup -t {fname}|last"
   puts "[90m  lists the content of a backup file (or of the latest if 'last')"
+  puts "[0:0mdotbackup --first"
+  puts "[90m  outputs the name of the first backup file (oldest)"
   puts "[0:0mdotbackup --last"
-  puts "[90m  outputs the name of the latest backup file"
+  puts "[90m  outputs the name of the latest backup file (most recent)"
   puts "[0:0mdotbackup --extract [fname]|last|"
   puts "[90m  extracts a given backup file or the latest if 'last' or none"
-  puts ""
+  puts "[0:0mdotbackup -p / --print-stats"
+  puts "[90m  outputs the total vs compressed size stats"
+  puts "[0:0m"
 
 elsif ARGV.empty? || (ARGV & %w[ -b --backup ]).any?
 
@@ -93,5 +97,10 @@ elsif (ARGV & %w[ --extract ]).any?
 
   system(
     "tarsnap -xv --keyfile #{KEY} --cachedir #{CACHE} -f #{f}")
+
+elsif (ARGV & %w[ -p --print-stats ]).any?
+
+  system(
+    "tarsnap --keyfile #{KEY} --cachedir #{CACHE} --print-stats")
 end
 
